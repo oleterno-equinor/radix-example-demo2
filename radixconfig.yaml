@@ -1,0 +1,25 @@
+apiVersion: radix.equinor.com/v1
+kind: RadixApplication
+metadata:
+  name: edc2021-olmt-demo-2
+spec:
+  environments:
+    - name: prod
+      build:
+        from: master
+  components:
+    - name: simple-react
+      environmentConfig:
+        - environment: prod
+          monitoring: true
+          runAsNonRoot: true
+      src: .
+      ports:
+       - name: http
+         port: 3000
+      publicPort: http
+      secrets:
+        - REACT_APP_SECRET
+  dnsAppAlias:
+    environment: prod
+    component: simple-react

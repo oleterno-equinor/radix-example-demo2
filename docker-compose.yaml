@@ -1,0 +1,23 @@
+version: "3.5"
+
+networks:
+  react-example-simple:
+    name: react-example-simple
+
+services:
+  frontend:
+    image: node:16-alpine
+    working_dir: /my-app
+    command: [ "sh", "-c", "npm install --prefer-offline --no-audit && npm start" ]
+    container_name: react-example-simple-frontend
+    environment:
+      - npm_config_proxy=${NPM_PROXY}
+      - REACT_APP_SECRET=supersecret
+    networks:
+      - react-example-simple
+    ports:
+      - "8000:3000"
+    volumes:
+      - type: bind
+        source: ./my-app
+        target: /my-app
